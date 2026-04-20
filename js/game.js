@@ -201,7 +201,9 @@
   function _animate() {
     requestAnimationFrame(_animate);
 
-    var dt = Math.min(clock.getDelta(), 0.05); // cap at 50 ms
+    // Cap dt at 50 ms to prevent physics instability during frame drops or
+    // when the browser tab is backgrounded and then foregrounded.
+    var dt = Math.min(clock.getDelta(), 0.05);
 
     if (state === STATE.PLAYING) {
       _tick(dt);

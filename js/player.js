@@ -42,6 +42,9 @@ var Player = (function () {
 
   var shakeTimer = 0, shakeAmt = 0;
 
+  /* Active hit-particles tracked so they can be cleaned up on reset */
+  var _particleTimeouts = [];
+
   /* ── input ─────────────────────────────────────────────── */
   var keys       = {};
   var mouseLeft  = false;
@@ -155,26 +158,23 @@ var Player = (function () {
 
   function _spawnHitFX(point, scene) {
     var count = 6;
-    var life  = 0.35;
+    var lifeMs = 350;
     for (var i = 0; i < count; i++) {
-      var geo  = new THREE.SphereGeometry(0.045, 4, 4);
-      var mat  = new THREE.MeshBasicMaterial({ color: 0xff2200 });
-      var p    = new THREE.Mesh(geo, mat);
-      p.position.copy(point);
-      var vel = new THREE.Vector3(
-        (Math.random() - 0.5) * 6,
-        Math.random() * 5 + 1,
-        (Math.random() - 0.5) * 6
-      );
-      p.userData.vel  = vel;
-      p.userData.life = life;
-      scene.add(p);
-      // Simple disposal after lifetime
-      setTimeout(function () {
-        scene.remove(p);
-        geo.dispose();
-        mat.dispose();
-      }, life * 1000);
+      (function () {
+        var geo = new THREE.SphereGeometry(0.045, 4, 4);
+        var mat = new THREE.MeshBasicMaterial({ color: 0xff2200 });
+        var p   = new THREE.Mesh(geo, mat);
+        p.position.copy(point);
+        scene.add(p);
+        var tid = setTimeout(function () {
+          scene.remove(p);
+          geo.dispose();
+          mat.dispose();
+          var idx = _particleTimeouts.indexOf(tid);
+          if (idx !== -1) _particleTimeouts.splice(idx, 1);
+        }, lifeMs);
+        _particleTimeouts.push(tid);
+      }());
     }
   }
 
@@ -309,6 +309,9 @@ var Player = (function () {
     shakeTimer = 0;
     for (var k in keys) keys[k] = false;
     mouseLeft = false;
+    // Cancel any pending hit-particle disposal timeouts
+    for (var i = 0; i < _particleTimeouts.length; i++) clearTimeout(_particleTimeouts[i]);
+    _particleTimeouts = [];
   }
 
   /* ── getters ─────────────────────────────────────────────*/
