@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>KILLFRAME</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <!-- ── Three.js canvas ─────────────────────────────────────── -->
+  <canvas id="game-canvas"></canvas>
+
+  <!-- ── Damage vignette (full-screen flash) ────────────────── -->
+  <div id="damage-overlay"></div>
+
+  <!-- ── HUD (visible while playing) ──────────────────────────── -->
+  <div id="hud" class="hidden">
+
+    <div id="crosshair"></div>
+    <div id="hit-marker"></div>
+
+    <!-- top bar -->
+    <div id="wave-display">WAVE&nbsp;<span id="wave-num">1</span></div>
+    <div id="score-display">SCORE&nbsp;<span id="score-num">0</span></div>
+
+    <!-- kill feed -->
+    <div id="kill-feed"></div>
+
+    <!-- health -->
+    <div id="health-container">
+      <span id="health-label">HP</span>
+      <div id="health-bar-bg"><div id="health-bar"></div></div>
+      <span id="health-num">100</span>
+    </div>
+
+    <!-- ammo -->
+    <div id="ammo-display">
+      <span id="ammo-current">30</span>
+      <span class="ammo-sep">/</span>
+      <span id="ammo-reserve">90</span>
+    </div>
+    <div id="weapon-name">KILLFRAME RIFLE</div>
+
+  </div>
+
+  <!-- reload indicator -->
+  <div id="reload-indicator" class="hidden">RELOADING…</div>
+
+  <!-- wave banner -->
+  <div id="wave-banner" class="hidden"></div>
+
+  <!-- ── MENU ──────────────────────────────────────────────────── -->
+  <div id="menu-overlay">
+    <div id="menu-content">
+      <div id="title-kf">KILL</div>
+      <div id="title-frame">FRAME</div>
+      <p id="game-subtitle">ELIMINATE ALL TARGETS</p>
+      <button id="start-btn">ENTER COMBAT</button>
+      <p id="controls-info">
+        WASD / ARROWS — MOVE &nbsp;|&nbsp; MOUSE — AIM &nbsp;|&nbsp;
+        LMB — FIRE &nbsp;|&nbsp; R — RELOAD &nbsp;|&nbsp;
+        SHIFT — SPRINT &nbsp;|&nbsp; SPACE — JUMP &nbsp;|&nbsp; ESC — PAUSE
+      </p>
+    </div>
+  </div>
+
+  <!-- ── GAME OVER ──────────────────────────────────────────── -->
+  <div id="gameover-overlay" class="hidden">
+    <div id="gameover-content">
+      <h1 id="gameover-title">YOU DIED</h1>
+      <div id="gameover-stats">
+        <p>WAVE REACHED:&nbsp;<span id="final-wave">1</span></p>
+        <p>FINAL SCORE:&nbsp;<span id="final-score">0</span></p>
+      </div>
+      <button id="restart-btn">PLAY AGAIN</button>
+    </div>
+  </div>
+
+  <!-- ── PAUSE ─────────────────────────────────────────────── -->
+  <div id="pause-overlay" class="hidden">
+    <div id="pause-content">
+      <h2>PAUSED</h2>
+      <button id="resume-btn">RESUME</button>
+      <button id="quit-btn">QUIT TO MENU</button>
+    </div>
+  </div>
+
+  <!-- Three.js r158 (UMD build, sets global THREE) -->
+  <script src="https://cdn.jsdelivr.net/npm/three@0.158.0/build/three.min.js"></script>
+
+  <!-- Game modules — load order matters (no bundler) -->
+  <script src="js/audio.js"></script>
+  <script src="js/level.js"></script>
+  <script src="js/hud.js"></script>
+  <script src="js/player.js"></script>
+  <script src="js/enemies.js"></script>
+  <script src="js/game.js"></script>
+
+</body>
+</html>
