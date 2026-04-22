@@ -64,6 +64,21 @@ js/
 Source/
   KILLFRAME/
     Target.h        Original Unreal Engine actor stub (preserved)
+Assets/
+  Scripts/
+    Core/
+      GameManager.cs    Singleton: wave progression, score, pause, game-over
+      EventManager.cs   Typed event bus + built-in game event structs
+    Player/
+      PlayerController.cs   CharacterController FPS movement (walk/sprint/jump)
+      PlayerHealth.cs       HP, damage intake, wave healing, death
+    Camera/
+      CameraController.cs   Mouse-look: yaw on player body, pitch on camera
+      CameraShake.cs        Perlin-noise procedural shake (singleton)
+    Combat/
+      IDamageable.cs        Interface implemented by any damageable entity
+      WeaponController.cs   Hitscan fire, ammo, reload, muzzle-flash
+      Projectile.cs         Physics projectile fired by enemies
 ```
 
 ---
