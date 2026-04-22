@@ -60,6 +60,11 @@ namespace KillFrame.Core
             IsGameOver = false;
 
             OnWaveStarted?.Invoke(CurrentWave);
+            EventManager.Publish(new WaveStartedEvent
+            {
+                Wave = CurrentWave,
+                EnemyCount = EnemiesRemainingInWave
+            });
         }
 
         public void RegisterEnemyKill()
@@ -74,6 +79,7 @@ namespace KillFrame.Core
         private void CompleteWave()
         {
             AddScore(waveClearBonus * CurrentWave);
+            EventManager.Publish(new WaveClearedEvent { Wave = CurrentWave });
             StartWave(CurrentWave + 1);
         }
 
